@@ -1,4 +1,5 @@
 import { update, initialize } from "./tree_dag.js";
+import *  as d3 from 'd3';
 
 
 // ============ EXPORT FUNCTIONS ============
@@ -19,31 +20,31 @@ export function circleMouseout(d) {
         .ease(d3.easeQuad)
         .delay("100")
         .duration("200")
-        .attr("r", (n) => circleSize(n) );
+        .attr("r", (n) => circleSize(n));
 }
 
 // define the size of the circles
 export function circleSize(d) {
     var threshold = 3;
-    
+
     if (d.data.counts > threshold) {
         return d.data.counts;
     }
     else {
-        return threshold; 
+        return threshold;
     }
 }
 
 // if no children, change color
 export function mouseDownCheckChildren(e, d) {
 
-    if (d._dataChildren) {    
-        if ( d.dataChildren.length == 0 & d._dataChildren.length == 0 ) {
+    if (d._dataChildren) {
+        if (d.dataChildren.length == 0 & d._dataChildren.length == 0) {
             d3.select(`circle#n${d.data.id}`)
                 .attr("fill", "#ff0000");
         }
     } else if (!d._dataChildren) {
-        if ( d.dataChildren.length == 0 & !d._dataChildren ) {
+        if (d.dataChildren.length == 0 & !d._dataChildren) {
             d3.select(`circle#n${d.data.id}`)
                 .attr("fill", "#ff0000");
         }
@@ -65,8 +66,8 @@ function inDescendants(desc1, compDescendants) {
 // gather list of ids from data object
 function gatherIds(data) {
     var output_ids = new Array();
-    
-    data.forEach( function (item) {
+
+    data.forEach(function (item) {
         output_ids.push(item.id);
     })
 
@@ -76,8 +77,8 @@ function gatherIds(data) {
 function filterExistingCodes(ids, data) {
     var remaining_codes = new Array();
 
-    data.forEach( function (item) {
-        if (ids.includes(item.id)) {}
+    data.forEach(function (item) {
+        if (ids.includes(item.id)) { }
         else {
             remaining_codes.push(item);
         }
@@ -88,23 +89,48 @@ function filterExistingCodes(ids, data) {
 // define the on click function
 // On click, the descendants of the clicked node will retract.
 export async function circleClick(e, d, dag, svgSelection, data) {
-    
-    
+
+
     //Collect the children of the input code
     //var cur_children_data = await d3.json('/children?code=' + d.data.id);
 
     //const cur_descendants = d.descendants('breadth').reverse()
+    //console.log(data);
+
+    //const toggleChildren = True;
+
     const cur_descendants = [d.roots()[0]]
+
+    if (true) {
+        for (var node of dag.idescendants()) {
+            //console.log(node);
+        }
+        for (var node of d.idescendants()) {
+            // console.log(node);
+        }
+    }
+
+
+
+    //console.log(d);
+    //console.log(dag);
+    //dag.x = 900;
+
+    //console.log(e.target);
+
+    //d.x = d.x + 20;
+
     //console.log(d.roots()[0]);
 
     //console.log(dag.data);
     //var orig_data = dag.data;
 
-    
     // if node is a descendant of the currently clicked node, retract the children
+
+    var changed_layers = {}
     for (var desc of dag.idescendants()) {
         if (inDescendants(desc, cur_descendants)) {
-            
+
             console.log(desc);
 
             if (desc._dataChildren && desc._dataChildren.length > 0) {
@@ -121,11 +147,11 @@ export async function circleClick(e, d, dag, svgSelection, data) {
                     .delay(500)
                     .ease(d3.easeCubicIn)
                     .duration(200)
-                    .attr("fill", (n) => { n.data.color });
-                    //.attr("fill", "#ff0000");
-                    //.transition()
-                    //    .delay(500)
-                        
+                    .attr("fill", (n) => n.data.color);
+                //.attr("fill", "#ff0000");
+                //.transition()
+                //    .delay(500)
+
             } else {
                 console.log('we got here');
             }
@@ -133,10 +159,10 @@ export async function circleClick(e, d, dag, svgSelection, data) {
     }
     //console.log(e);
     //console.log(data);
-    
+
     //var existing_ids = gatherIds(data);
     //var remaining_codes = filterExistingCodes(existing_ids, cur_children_data.children)
-    
+
     //console.log(remaining_codes);
 
     //var new_data = data.concat(remaining_codes)
