@@ -1,0 +1,11 @@
+May 5, 2023
+We tried to fix the links, it didn't work.
+
+May 12, 2023
+1. Continue working on fixing the paths so they don't fill. (FIXED)
+2. Discuss layout approach on change. (Discussed)
+
+May 19, 2023
+1. We need to look at the sugyama documentation. We are trying to control the horizontal ordering of the nodes on a layer. Can we 
+directly calculate the distance between nodes per layer.
+2. Possibly, work on importing private functions from d3-dag library. Need to breakout the sugyama algorithm. Siggie not convinced.
