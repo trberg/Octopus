@@ -256,17 +256,17 @@ function transform_nodes(d, stage) {
 
     if (stage == "enter") {
 
-       return "translate(" + d.x + "," + d.y + ")";
+        return "translate(" + d.x + "," + d.y + ")";
     } else if (stage == 'exit') {
 
-            // d3.select(event.target).data()[0]
-       var event_circle = d,
-           x = event_circle.x,
-           y = event_circle.y;
+        //     // d3.select(event.target).data()[0]
+        var event_circle = d,
+            x = event_circle.x,
+            y = event_circle.y;
 
-       return "translate(" + x + "," + y + ")";
+        return "translate(" + x + "," + y + ")";
     } else {
-       return "translate(" + d.x + "," + d.y + ")";
+        return "translate(" + d.x + "," + d.y + ")";
     }
 
     /*handleLoad(); {
@@ -277,6 +277,7 @@ function transform_nodes(d, stage) {
 
     handleClick()*/
 
+<<<<<<< HEAD
     // if (d3.event) {
     //     if (d3.event.type == "load") {
 
@@ -290,6 +291,21 @@ function transform_nodes(d, stage) {
     //         var cur_node = d;
 
     //         var event_node = d3.select(d3.event.target).data()[0],
+=======
+    // if (event) {
+    //     if (event.type == "load") {
+
+    //     } else if (event && event.isTrusted && event.type == 'click') {
+    //         var event_node = d3.select(event.target).data()[0],
+    //             x = event_node.x,
+    //             y = event_node.y;
+    //         return "translate(" + x + "," + y + ")";
+    //     } else if (event && event.isTrusted && event.type == 'click') {
+
+    //         var cur_node = d;
+
+    //         var event_node = d3.select(event.target).data()[0],
+>>>>>>> e7f706a92ff9179079103edea4ecb4b22d0684f0
     //             x = event_node.x,
     //             y = event_node.y;
     //         return "translate(" + cur_node.x + "," + cur_node.y + ")";
