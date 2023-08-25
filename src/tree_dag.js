@@ -168,8 +168,8 @@ export function update(dag, svgSelection, data) {
                     .ease(d3.easeLinear)
                     .duration(duration)
                     .attr("transform", (n) => transform_nodes(n, 'update'))
-                    .attr("fill", (n) => n.data.color);
-                //.attr("r", (n) => circleSize(n) );
+                    .attr("fill", (n) => n.data.color)
+                    .attr("r", (n) => circleSize(n) );
             },
             function (exit) {
                 return exit.transition()
@@ -237,8 +237,8 @@ export function update(dag, svgSelection, data) {
 
 function transform_links(d, diagonal, stage) {
 
-    console.log("LINKS");
-    console.log(stage);
+    //console.log("LINKS");
+    //console.log(stage);
     // setting the transition path for the exiting links
     if (stage == 'exit') {
         var event_circle = d.source,
@@ -256,6 +256,8 @@ function transform_nodes(d, stage) {
 
     if (stage == "enter") {
 
+        return "translate(" + d.x + "," + d.y + ")";
+    } else if (stage == "update") {
         return "translate(" + d.x + "," + d.y + ")";
     } else if (stage == 'exit') {
 
@@ -277,21 +279,6 @@ function transform_nodes(d, stage) {
 
     handleClick()*/
 
-<<<<<<< HEAD
-    // if (d3.event) {
-    //     if (d3.event.type == "load") {
-
-    //     } else if (d3.event && d3.event.isTrusted && d3.event.type == 'click') {
-    //         var event_node = d3.select(d3.event.target).data()[0],
-    //             x = event_node.x,
-    //             y = event_node.y;
-    //         return "translate(" + x + "," + y + ")";
-    //     } else if (d3.event && d3.event.isTrusted && d3.event.type == 'click') {
-
-    //         var cur_node = d;
-
-    //         var event_node = d3.select(d3.event.target).data()[0],
-=======
     // if (event) {
     //     if (event.type == "load") {
 
@@ -305,7 +292,6 @@ function transform_nodes(d, stage) {
     //         var cur_node = d;
 
     //         var event_node = d3.select(event.target).data()[0],
->>>>>>> e7f706a92ff9179079103edea4ecb4b22d0684f0
     //             x = event_node.x,
     //             y = event_node.y;
     //         return "translate(" + cur_node.x + "," + cur_node.y + ")";

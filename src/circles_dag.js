@@ -109,7 +109,7 @@ export async function circleClick(e, d, dag, svgSelection, data) {
             // console.log(node);
         }
     }
-
+    console.log(d.x, d.y, d);
 
 
     //console.log(d);
@@ -131,7 +131,7 @@ export async function circleClick(e, d, dag, svgSelection, data) {
     for (var desc of dag.idescendants()) {
         if (inDescendants(desc, cur_descendants)) {
 
-            console.log(desc);
+            //console.log(desc);
 
             if (desc._dataChildren && desc._dataChildren.length > 0) {
                 //console.log(desc._dataChildren);
