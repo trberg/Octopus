@@ -9,3 +9,11 @@ May 19, 2023
 1. We need to look at the sugyama documentation. We are trying to control the horizontal ordering of the nodes on a layer. Can we 
 directly calculate the distance between nodes per layer.
 2. Possibly, work on importing private functions from d3-dag library. Need to breakout the sugyama algorithm. Siggie not convinced.
+
+July 28, 2023
+1. We successfuly did git diff
+2. Circle sizes are either not being calculated or are not rendering
+3. Fix repository branches, origins, mains, and masters.
+
+August 25, 2023
+1. 
