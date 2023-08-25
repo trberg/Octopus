@@ -8,7 +8,6 @@ May 12, 2023
 May 19, 2023
 1. We need to look at the sugyama documentation. We are trying to control the horizontal ordering of the nodes on a layer. Can we 
 directly calculate the distance between nodes per layer.
-<<<<<<< HEAD
 2. Possibly, work on importing private functions from d3-dag library. Need to breakout the sugyama algorithm. Siggie not convinced.
 
 July 28, 2023
@@ -17,7 +16,9 @@ July 28, 2023
 3. Fix repository branches, origins, mains, and masters.
 
 August 25, 2023
-1. 
-=======
-2. Possibly, work on importing private functions from d3-dag library. Need to breakout the sugyama algorithm. Siggie not convinced.
->>>>>>> e7f706a92ff9179079103edea4ecb4b22d0684f0
+1. Kind of solved the circle issue.
+2. clicked circle not following proper movement pattern.
+3. code is in master, not in main. Update default
+4. Need to look into functions enter, update, and exit. May have been changed in new D3.
+5. Update seems to be doing most of the heavy lifting in terms of calculating initial location and transitions. Not sure why.
+6. Update function not applying to on-clicked circle.

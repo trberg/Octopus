@@ -144,6 +144,7 @@ export function update(dag, svgSelection, data) {
         // initiate the nodes
         nodes.join(
             function (enter) {
+                console.log("ENTERING", enter);
                 return enter.append("circle")
                     .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" })
                     .attr("id", (n) => "n" + n.data.id)
@@ -163,6 +164,7 @@ export function update(dag, svgSelection, data) {
                     .attr("r", (n) => circleSize(n));
             },
             function (update) {
+                console.log("UPDATE", update);
                 return update.raise().transition()
                     .delay(wait_time)
                     .ease(d3.easeLinear)
@@ -172,6 +174,7 @@ export function update(dag, svgSelection, data) {
                     .attr("r", (n) => circleSize(n) );
             },
             function (exit) {
+                console.log("EXITING", exit);
                 return exit.transition()
                     .ease(exit_easement)
                     .duration(exit_duration)
@@ -217,6 +220,8 @@ export function update(dag, svgSelection, data) {
                     .delay(wait_time)
                     .ease(d3.easeLinear)
                     .duration(duration)
+                    .call(text_wrap, 20)
+                    .attr("font-size", 10)
                     .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" });
             },
             function (exit) {
@@ -254,10 +259,13 @@ function transform_nodes(d, stage) {
     //console.log(d);
     //console.log(stage);
 
+    return "translate(" + d.x + "," + d.y + ")";
+
     if (stage == "enter") {
 
         return "translate(" + d.x + "," + d.y + ")";
     } else if (stage == "update") {
+
         return "translate(" + d.x + "," + d.y + ")";
     } else if (stage == 'exit') {
 
@@ -268,6 +276,7 @@ function transform_nodes(d, stage) {
 
         return "translate(" + x + "," + y + ")";
     } else {
+
         return "translate(" + d.x + "," + d.y + ")";
     }
 
