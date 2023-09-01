@@ -134,23 +134,89 @@ export function update(dag, svgSelection, data) {
             }
         );
 
+        
+        // ===== NODES =====
+        // setup g elements to append text and circles
+        let g = svgSelection
+                .selectAll("g")
+                .data(dag.descendants(), function (d) { return d.data.id });
+
+        g.join(
+            function (enter) {
+                g = enter.append("g")
+                    .attr("id", (d) => "n" + d.data.id)
+                    .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" });
+                    // append circle
+                    //console.log(g);
+                    //debugger
+                    g.append("circle")
+                        .attr("stroke", "black")
+                        .attr("fill", (n) => n.data.color)
+                        .transition()
+                        .delay(wait_time)
+                        .ease(easement)
+                        .duration(duration)
+                            .attr("r", (n) => circleSize(n));
+                g.append("text")
+                        .text((d) => d.data.name)
+                        .attr("font-weight", "800")
+                        .attr("font-family", "sans-serif")
+                        .attr("text-anchor", "middle")
+                        //.attr("font-size", 0)
+                        .attr("alignment-baseline", "baseline")
+                        .attr("fill", "black")
+                        //.attr("x", 0)
+                        .attr("y", (d) => circleSize(d)+5)
+                        .transition()
+                        .delay(wait_time)
+                        .ease(easement)
+                        .duration(duration)
+                            .call(text_wrap, 20)
+                            .attr("font-size", 10);
+                return g;
+            },
+            function (update) {
+                return update.raise().transition()
+                    .delay(wait_time)
+                    .ease(d3.easeLinear)
+                    .duration(duration)
+                    .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" });
+            },
+            function (exit) {
+                return exit.transition()
+                    .ease(exit_easement)
+                    .duration(exit_duration)
+                    .attr("transform", (d) => {return "translate(" + d.x + "," + d.y + ")"})
+                    .remove();
+            }
+        );
+        /*
+        const circles = g.selectAll("circle");
+
 
         // ===== NODES =====
         // setup intial node attributes
-        const nodes = svgSelection
-            .selectAll("circle")
-            .data(dag.descendants(), function (d) { return d.data.id });
+        //const circles = g
+        //    .selectAll("circle")
+        //    .data(dag.descendants(), function (d) { return d.data.id });
 
         // initiate the nodes
-        nodes.join(
+        circles.join(
             function (enter) {
-                console.log("ENTERING", enter);
+                //console.log("ENTERING", enter);
                 return enter.append("circle")
-                    .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" })
-                    .attr("id", (n) => "n" + n.data.id)
+                    .data(d => { 
+                        console.log(d);
+                        console.log(circleSize(d));
+                        console.log(this);
+                        return d;
+                    })
+                    //.attr("id", (n) => "n" + n.data.id)
                     .attr("stroke", "black")
                     .attr("fill", (n) => n.data.color)
                     .attr("r", 0)
+                    .attr("x", 0)
+                    .attr("y",0)
                     .on("mouseover", function (d) { circleMouseover(d) })
                     .on("mousedown", function (e, d) { mouseDownCheckChildren(e, d) })
                     .on("mouseup", function (d) { circleMouseover(d) })
@@ -160,7 +226,7 @@ export function update(dag, svgSelection, data) {
                     .delay(wait_time)
                     .ease(easement)
                     .duration(duration)
-                    .attr("transform", (n) => transform_nodes(n, 'enter'))
+                    //.attr("transform", (n) => { return "translate(" + d.x + "," + d.y + ")" })
                     .attr("r", (n) => circleSize(n));
             },
             function (update) {
@@ -169,7 +235,7 @@ export function update(dag, svgSelection, data) {
                     .delay(wait_time)
                     .ease(d3.easeLinear)
                     .duration(duration)
-                    .attr("transform", (n) => transform_nodes(n, 'update'))
+                    //.attr("transform", (n) => transform_nodes(n, 'update'))
                     .attr("fill", (n) => n.data.color)
                     .attr("r", (n) => circleSize(n) );
             },
@@ -178,7 +244,7 @@ export function update(dag, svgSelection, data) {
                 return exit.transition()
                     .ease(exit_easement)
                     .duration(exit_duration)
-                    .attr("transform", (n) => transform_nodes(n, 'exit'))
+                    //.attr("transform", (n) => transform_nodes(n, 'exit'))
                     .style("opacity", 1e-6)
                     .attr("fill", (d) => {
                         //console.log(d.data); 
@@ -192,22 +258,23 @@ export function update(dag, svgSelection, data) {
 
         // ===== TEXT =====
         // Add text to nodes
-        const text = svgSelection
-            .selectAll("text")
-            .data(dag.descendants(), function (d) { return d.data.id });
+        const text = g.selectAll("text");
+            //.data(dag.descendants(), function (d) { return d.data.id });
 
         text.join(
             function (enter) {
                 return enter.append("text")
                     .text((d) => d.data.name)
-                    .attr("id", (d) => "n" + d.data.id)
-                    .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" })
+                    //.attr("id", (d) => "n" + d.data.id)
+                    //.attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" })
                     .attr("font-weight", "800")
                     .attr("font-family", "sans-serif")
                     .attr("text-anchor", "middle")
                     .attr("font-size", 0)
                     .attr("alignment-baseline", "baseline")
                     .attr("fill", "black")
+                    .attr("x", 0)
+                    .attr("y", (d) => circleSize(d)+5)
                     .transition()
                     .delay(wait_time)
                     .ease(easement)
@@ -222,19 +289,19 @@ export function update(dag, svgSelection, data) {
                     .duration(duration)
                     .call(text_wrap, 20)
                     .attr("font-size", 10)
-                    .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" });
+                    //.attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" });
             },
             function (exit) {
                 return exit.transition()
                     .ease(exit_easement)
                     .duration(exit_duration)
                     .attr("font-size", 1)
-                    .attr("transform", (n) => transform_nodes(n, 'exit'))
+                    //.attr("transform", (n) => { return "translate(" + d.x + "," + d.y + ")" })
                     .style("opacity", 1e-6)
                     .remove();
             }
         );
-
+        */
     } catch (error) {
         console.log(error);
     }
