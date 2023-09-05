@@ -150,14 +150,21 @@ export function update(dag, svgSelection, data) {
                     //console.log(g);
                     //debugger
                     g.append("circle")
+                        .attr("id", (d) => "n" + d.data.id)
                         .attr("stroke", "black")
                         .attr("fill", (n) => n.data.color)
+                        .on("mouseover", function (d) { circleMouseover(d) })
+                        .on("mousedown", function (e, d) { mouseDownCheckChildren(e, d) })
+                        .on("mouseup", function (d) { circleMouseover(d) })
+                        .on("mouseout", function (d) { circleMouseout(d) })
+                        .on("click", (e, d) => circleClick(e, d, dag, svgSelection, data))
                         .transition()
                         .delay(wait_time)
                         .ease(easement)
                         .duration(duration)
                             .attr("r", (n) => circleSize(n));
                 g.append("text")
+                        .attr("id", (d) => "n" + d.data.id)
                         .text((d) => d.data.name)
                         .attr("font-weight", "800")
                         .attr("font-family", "sans-serif")
