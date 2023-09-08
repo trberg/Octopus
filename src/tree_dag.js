@@ -64,11 +64,13 @@ export function update(dag, svgSelection, data) {
         window.sug_layout(dag);
 
         // timing configuration     s
-        var duration = 2500,
+        var duration = 5000,
             exit_duration = 2500,
             wait_time = 800,
-            easement = d3.easeElastic,
-            exit_easement = d3.easeBack;
+            //easement = d3.easeElastic,
+            easement = d3.easeLinear,
+            //exit_easement = d3.easeBack;
+            exit_easement = d3.easeLinear;
 
 
         // Function to generate link between nodes
@@ -89,6 +91,7 @@ export function update(dag, svgSelection, data) {
                     .attr("id", (d) => { return "n" + `${d.source.data.id}-${d.target.data.id}`; })
                     .attr("class", "link")
                     .attr("d", (d) => gen_link(d))
+                    .style("stroke-width", 0)
                     .transition()
                     .delay(wait_time)
                     .ease(easement)
@@ -109,7 +112,7 @@ export function update(dag, svgSelection, data) {
                 // console.log("UPDATE")
                 return update.transition()
                     .delay(wait_time)
-                    .ease(d3.easeLinear)
+                    .ease(easement)
                     .duration(duration)
                     .attr("d", (d) => gen_link(d))
                     .style("stroke", ({ target }) => { return `${target.data.color}` })
@@ -127,7 +130,7 @@ export function update(dag, svgSelection, data) {
                 return exit.transition()
                     .ease(exit_easement)
                     .duration(exit_duration)
-                    .attr("d", (d) => transform_links(d, gen_link, 'exit'))
+                    //.attr("d", (d) => transform_links(d, gen_link, 'exit'))
                     .style("opacity", 1e-6)
                     .attr("stroke-width", 0)
                     .remove();
@@ -150,7 +153,7 @@ export function update(dag, svgSelection, data) {
                     //console.log(g);
                     //debugger
                     g.append("circle")
-                        .attr("id", (d) => "n" + d.data.id)
+                        .attr("id", (d) => "circle" + d.data.id)
                         .attr("stroke", "black")
                         .attr("fill", (n) => n.data.color)
                         .on("mouseover", function (d) { circleMouseover(d) })
@@ -164,12 +167,12 @@ export function update(dag, svgSelection, data) {
                         .duration(duration)
                             .attr("r", (n) => circleSize(n));
                 g.append("text")
-                        .attr("id", (d) => "n" + d.data.id)
+                        .attr("id", (d) => "text" + d.data.id)
                         .text((d) => d.data.name)
                         .attr("font-weight", "800")
                         .attr("font-family", "sans-serif")
                         .attr("text-anchor", "middle")
-                        //.attr("font-size", 0)
+                        .attr("font-size", 0)
                         .attr("alignment-baseline", "baseline")
                         .attr("fill", "black")
                         //.attr("x", 0)
@@ -185,16 +188,30 @@ export function update(dag, svgSelection, data) {
             function (update) {
                 return update.raise().transition()
                     .delay(wait_time)
-                    .ease(d3.easeLinear)
+                    .ease(easement)
                     .duration(duration)
                     .attr("transform", (d) => { return "translate(" + d.x + "," + d.y + ")" });
             },
             function (exit) {
-                return exit.transition()
+                exit.selectAll("circle").transition()
                     .ease(exit_easement)
                     .duration(exit_duration)
-                    .attr("transform", (d) => {return "translate(" + d.x + "," + d.y + ")"})
-                    .remove();
+                        .attr("r", 0);
+
+                
+
+                exit.transition()
+                    .ease(exit_easement)
+                    .duration(exit_duration)
+                        .attr("transform", (d) => {return "translate(" + d.x + "," + d.y + ")"})
+                        .remove();
+
+                exit.selectAll("text").transition()
+                    .ease(exit_easement)
+                    .duration(exit_duration)
+                        .attr("font-size",1)
+                        .attr("fill", "white");
+
             }
         );
         /*
