@@ -1,9 +1,20 @@
 import './styles.css';
-import React, { useEffect } from 'react';
-import { init } from './index_dag';
+import React, { useEffect, useState, } from 'react';
+import { render } from './tree_dag';
+import {getData} from "./data";
 
 function App() {
-  useEffect(() => { init() });
+  const [data, setData] = useState([]);
+  function modifyData(modification) {
+    const _data = getData(modification);
+    setData(_data);
+  }
+  useEffect(() => {
+    modifyData();
+  });
+  useEffect(() => {
+    render(data, modifyData);
+  }, [data]);
 
   return (
     <div className="octopus">
