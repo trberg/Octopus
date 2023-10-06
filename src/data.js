@@ -1,11 +1,53 @@
+import {createContext, useContext, useReducer} from "react";
+import {reduce, once} from "lodash";
 
-export function getData(modification) {
-    let data = data_strat;
-    if (modification) {
-        // do something
+
+export async function getData() {
+    let data = dataAsObject(data_strat);
+    return data;
+}
+
+let collapseNodes = {};
+function collapseDescendants() {
+
+}
+export function toggleNode(nodeId) {
+    if (nodeId in collapseNodes) {
+        if (collapseNodes[nodeId]) {
+            delete collapseNodes[nodeId];
+        } else {
+            throw new Error('')
+        }
+    } else {
+        collapseNodes[nodeId] = true;
+    }
+
+    let data = dataAsObject(data_strat);
+    let hidden;
+    for (const id of collapseDescendants) {
+        hidden = reduce(collapseDescendants, (acc, val, key, data) => {
+            for (const d of data[val]) {
+                for (const p of d.parents) {
+                    // no, have to keep nodes with uncollapsed parents,
+                    // so probably go through each node and check if it has uncollapsed parents
+                    acc[p] = true;
+                }
+            }
+        }, {});
     }
     return data;
 }
+function removeDescendants(data, id) {
+
+}
+const dataAsObject = once((data) => {
+    let obj = {};
+    for (const d of data) {
+        obj[d.id] = d;
+    }
+    return obj;
+});
+
 const data_strat = [
     {'id': '40483287', 'name': 'Disorder of kidney and/or ureter', 'color': '#D3D3D3', 'counts': 0, 'parents': ['75865'], 'children': ['198124']},
     {'id': '75865', 'name': 'Disorder of the urinary system', 'color': '#D3D3D3', 'counts': 0, 'parents': ['4024000', '4171379'], 'children': ['40483287'], 'hidden': 'False'},
@@ -108,4 +150,53 @@ const data_strat = [
     {'id': '44782733', 'name': 'Acute on chronic combined systolic and diastolic heart failure', 'color': '#50C878', 'counts': 5, 'parents': ['40481043', '40480602', '44782718', '44782719'], 'children': [], 'hidden': 'False'},
     {'id': '318773', 'name': 'Dilated cardiomyopathy secondary to alcohol', 'color': '#50C878', 'counts': 5, 'parents': ['44783568'], 'children': [], 'hidden': 'False'}
 
-]
+];
+/*
+export const dataReducer = (state, action) => {
+  if (!action || !action.type) return state;
+  let {type, id, } = action;
+  if (!id) {
+    throw new Error(`alertAction requires an id`, alert);
+  }
+
+  let alert = state[id];
+  if (type === 'create') {
+    if (alert) {
+      throw new Error(`alert with id ${id} already exists`, alert);
+    }
+    alert = {
+      ...action,
+      id: id ?? Object.keys(state).length,
+      status: 'unread',
+      severity: 'info',
+    };
+  } else if (type === 'resolve') {
+    alert = {...alert, ...action, status: 'complete', severity: 'success', };
+  } else if (type === 'error') {
+    alert = {...alert, ...action, status: 'error', severity: 'error', };
+  } else {
+    throw new Error(`bad alert type: ${type}`);
+  }
+  return {[alert.id]: alert, ...state, };
+}
+
+const DataContext = createContext(null);
+const DataDispatchContext = createContext(null);
+export function DataProvider({ children }) {
+  const [data, dispatch] = useReducer(dataReducer, {});
+
+  return (
+      <DataContext.Provider value={data}>
+        <DataDispatchContext.Provider value={dispatch}>
+          {children}
+        </DataDispatchContext.Provider>
+      </DataContext.Provider>
+  );
+}
+export function useData() {
+  return useContext(DataContext);
+}
+export function useDataDispatch() {
+  return useContext(DataDispatchContext);
+}
+ */

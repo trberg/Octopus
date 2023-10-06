@@ -86,19 +86,22 @@ function filterExistingCodes(ids, data) {
 }
 
 function update() {
-    console.warn("fix this and replace with modifyData(...); then App.js will call render again")
+    console.warn("fix this and replace with toggleNode(...); then App.js will call render again")
 }
 
 // define the on click function
 // On click, the descendants of the clicked node will retract.
-export async function circleClick(e, d, dag, svgSelection, data, modifyData) {
+export async function circleClick(e, d, dag, svgSelection, data, toggleNode) {
     //Collect the children of the input code
     //var cur_children_data = await d3.json('/children?code=' + d.data.id);
     //const cur_descendants = d.descendants('breadth').reverse()
 
+    console.log('in circle click');
+    toggleNode(d.data.id);
+
     const cur_descendants = [d.roots()[0]]
 
-    // hide or unhide the children of the clicked node by calling modifyData with an instruction for what to do
+    // hide or unhide the children of the clicked node by calling toggleNode
     if (true) {
         for (var node of dag.idescendants()) {
             //console.log(node);

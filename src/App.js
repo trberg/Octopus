@@ -1,19 +1,20 @@
 import './styles.css';
 import React, { useEffect, useState, } from 'react';
 import { render } from './tree_dag';
-import {getData} from "./data";
+import {getData, toggleNode} from "./data";
 
 function App() {
   const [data, setData] = useState([]);
-  function modifyData(modification) {
-    const _data = getData(modification);
-    setData(_data);
-  }
+
   useEffect(() => {
-    modifyData();
-  });
+    (async () => {
+      const _data = await getData();
+      setData(_data);
+    })();
+  }, []);
+
   useEffect(() => {
-    render(data, modifyData);
+    render(data, () => toggleNode(data, setData));
   }, [data]);
 
   return (

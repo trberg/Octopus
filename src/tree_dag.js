@@ -15,10 +15,11 @@ const dagCreator = once(function () {
     return createDag;
 });
 
-export function render(data, modifyData) {
+export function render(data, toggleNode) {
     if (isEmpty(data)) {
         return;
     }
+    data = Object.values(data);
     const createDag = dagCreator();
     const dag = createDag(data);
 
@@ -141,7 +142,7 @@ export function render(data, modifyData) {
                         .on("mousedown", function (e, d) { mouseDownCheckChildren(e, d) })
                         .on("mouseup", function (d) { circleMouseover(d) })
                         .on("mouseout", function (d) { circleMouseout(d) })
-                        .on("click", (e, d) => circleClick(e, d, dag, svg, data, modifyData))
+                        .on("click", (e, d) => circleClick(e, d, dag, svg, data, toggleNode))
                         .transition()
                         .delay(wait_time)
                         .ease(easement)
