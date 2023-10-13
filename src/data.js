@@ -1,9 +1,10 @@
 import {createContext, useContext, useReducer} from "react";
-import {reduce, once} from "lodash";
+import {reduce, once, pick, flatten, } from "lodash";
 
 
 export async function getData() {
-    let data = dataAsObject(data_strat);
+    // let data = dataAsObject(data_strat);
+    let data = formatDataForConnect(data);
     return data;
 }
 
@@ -24,6 +25,7 @@ export function toggleNode(nodeId) {
 
     let data = dataAsObject(data_strat);
     let hidden;
+    /*
     for (const id of collapseDescendants) {
         hidden = reduce(collapseDescendants, (acc, val, key, data) => {
             for (const d of data[val]) {
@@ -35,6 +37,7 @@ export function toggleNode(nodeId) {
             }
         }, {});
     }
+     */
     return data;
 }
 function removeDescendants(data, id) {
@@ -46,6 +49,11 @@ const dataAsObject = once((data) => {
         obj[d.id] = d;
     }
     return obj;
+});
+const formatDataForConnect = once((data) => {
+    const nodes = data.map(d => pick(d, ['id','name', 'color']));
+    const edges = flatten(data.filter(d => d.children.length).map(d => d.children.map(c => ([d.id, c].sort()))));
+    return {nodes, edges};
 });
 
 const data_strat = [

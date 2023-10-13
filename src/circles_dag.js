@@ -97,7 +97,7 @@ export async function circleClick(e, d, dag, svgSelection, data, toggleNode) {
     //const cur_descendants = d.descendants('breadth').reverse()
 
     console.log('in circle click');
-    toggleNode(d.data.id);
+    toggleNode({d, dag});
 
     const cur_descendants = [d.roots()[0]]
 
