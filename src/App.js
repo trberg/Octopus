@@ -1,9 +1,21 @@
 import './styles.css';
-import React, { useEffect } from 'react';
-import { init } from './index_dag';
+import React, { useEffect, useState, } from 'react';
+import { render } from './tree_dag';
+import {getData, toggleNode} from "./data";
 
 function App() {
-  useEffect(() => { init() });
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const _data = await getData();
+      setData(_data);
+    })();
+  }, []);
+
+  useEffect(() => {
+    render(data, () => toggleNode(data, setData));
+  }, [data]);
 
   return (
     <div className="octopus">

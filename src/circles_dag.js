@@ -1,4 +1,3 @@
-import { update, initialize } from "./tree_dag.js";
 import *  as d3 from 'd3';
 
 
@@ -86,21 +85,23 @@ function filterExistingCodes(ids, data) {
     return remaining_codes;
 }
 
+function update() {
+    console.warn("fix this and replace with toggleNode(...); then App.js will call render again")
+}
+
 // define the on click function
 // On click, the descendants of the clicked node will retract.
-export async function circleClick(e, d, dag, svgSelection, data) {
-
-
+export async function circleClick(e, d, dag, svgSelection, data, toggleNode) {
     //Collect the children of the input code
     //var cur_children_data = await d3.json('/children?code=' + d.data.id);
-
     //const cur_descendants = d.descendants('breadth').reverse()
-    //console.log(data);
 
-    //const toggleChildren = True;
+    console.log('in circle click');
+    toggleNode(d.data.id);
 
     const cur_descendants = [d.roots()[0]]
 
+    // hide or unhide the children of the clicked node by calling toggleNode
     if (true) {
         for (var node of dag.idescendants()) {
             //console.log(node);
@@ -109,24 +110,6 @@ export async function circleClick(e, d, dag, svgSelection, data) {
             // console.log(node);
         }
     }
-    console.log(d.x, d.y, d);
-
-
-    //console.log(d);
-    //console.log(dag);
-    //dag.x = 900;
-
-    //console.log(e.target);
-
-    //d.x = d.x + 20;
-
-    //console.log(d.roots()[0]);
-
-    //console.log(dag.data);
-    //var orig_data = dag.data;
-
-    // if node is a descendant of the currently clicked node, retract the children
-
     var changed_layers = {}
     for (var desc of dag.idescendants()) {
         if (inDescendants(desc, cur_descendants)) {
