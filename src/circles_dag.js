@@ -142,7 +142,9 @@ export async function circleClick(e, d, dag, svgSelection, data) {
                 desc.dataChildren = [];
             } else if (!desc._dataChildren && desc.dataChildren.length == 0) {
                 console.log('No data children');
-                d3.select(`circle#n${d.data.id}`)
+                console.log(d.data.id);
+                console.log(`circle${d.data.id}`);
+                d3.select(`#circle${d.data.id}`)
                     .transition()
                     .delay(500)
                     .ease(d3.easeCubicIn)

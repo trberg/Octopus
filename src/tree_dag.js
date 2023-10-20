@@ -41,7 +41,7 @@ export function initialize(dag) {
     //const layers = d3.sugify(dag);
     //console.log(layout);
 
-    const { width, height } = layout(dag);
+    //const { width, height } = layout(dag);
     window.dag = dag;
 
     const svg = d3.select("svg#dag-tree")
