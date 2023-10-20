@@ -63,3 +63,7 @@ Oct 6, 2023
    and then provide the actual nodes for them either on demand or, if
    resources available, on prefetch
 10.Slider for the user to balance between performance and data density
+
+Oct. 20, 2023
+1. decided to move from d3 to sigma, graphology, and networkx since sigma can handle more elements and may solve our scaling problem.
+2. Siggie will begin the process of rebuilding the graph using sigma and graphology.
