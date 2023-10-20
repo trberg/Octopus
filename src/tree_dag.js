@@ -1,11 +1,11 @@
+import *  as d3 from 'd3';
+import { dagStratify, sugiyama } from 'd3-dag';
+import {once, isEmpty, uniq, flatten,} from 'lodash';
+
 import { get_data } from './data.js';
 import { circleMouseover, circleMouseout, mouseDownCheckChildren, circleSize, circleClick } from "./circles_dag.js";
 import { text_wrap } from './labels_dag.js';
-import { dagStratify, sugiyama } from 'd3-dag';
-import *  as d3 from 'd3';
-import {once, isEmpty, } from 'lodash';
 import './styles.css'
-
 
 
 const dagCreator = once(function () {

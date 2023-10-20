@@ -1,11 +1,35 @@
 import {createContext, useContext, useReducer} from "react";
-import {reduce, once, pick, flatten, } from "lodash";
+import {reduce, once, pick, flatten, uniq, } from "lodash";
+import Graph from "graphology";
 
+
+function incrementalId() {
+  let i = 0;
+  return () => i++;
+}
+const edgeKeyGenerator = incrementalId();
+
+export function makeGraph(data) {
+    const {nodes, edges} = formatDataForConnect(data);
+    const G = new Graph();
+    for (const n of nodes) {
+        G.addNode(n);
+    }
+    for (const e of edges) {
+        G.addEdgeWithKey(edgeKeyGenerator(), ...e)
+    }
+    return G;
+}
+
+const formatDataForConnect = once((data) => {
+    const nodes = data.map(d => pick(d, ['id','name', 'color', 'counts']));
+    const edges = flatten(data.filter(d => d.children.length).map(d => d.children.map(c => ([d.id, c].sort()))));
+    return {nodes, edges};
+});
 
 export async function getData() {
     // let data = dataAsObject(data_strat);
-    let data = formatDataForConnect(data);
-    return data;
+    return data_strat;
 }
 
 let collapseNodes = {};
@@ -49,11 +73,6 @@ const dataAsObject = once((data) => {
         obj[d.id] = d;
     }
     return obj;
-});
-const formatDataForConnect = once((data) => {
-    const nodes = data.map(d => pick(d, ['id','name', 'color']));
-    const edges = flatten(data.filter(d => d.children.length).map(d => d.children.map(c => ([d.id, c].sort()))));
-    return {nodes, edges};
 });
 
 const data_strat = [
