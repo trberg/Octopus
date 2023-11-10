@@ -51,6 +51,7 @@ Oct 6, 2023
     - whether all or some children/descendants belong to concept sets
     - how deep it goes
     - easy access to names of children
+    - patient/record counts
 7.  What about multiple relationship types? Mapping, body site, causes, etc.
     - Could show collapsed nodes as children, one for each relationship type
 8.  If user has a lot of nodes displayed (and many more in memory), and tries
