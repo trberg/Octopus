@@ -34,7 +34,7 @@ September 15, 2023
 2. Paths should disappear. Layer should maintain arrangement, but recover space. 
 3. Core issue - Stopping re-arrangement, but recover space in affected layers.
 
-Oct 6, 2023
+### Oct 6, 2023 -- requirements for multiple concept set display and dynamic subtree summarization and loading
 1. Moving towards controlling data collapse/fetch from our own data module
    instead of operating on the d3-dag data structure
 2. Talking through data and display ideas
